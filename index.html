@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="description" content="Aadu Puli Aatam (ஆடு புலி ஆட்டம்) - Standalone Traditional Indian Hunt Strategy Board Game with 3 Tigers and 15 Goats, Intelligent AI, and 7-Step Tutorial.">
+  <meta name="theme-color" content="#120D0A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Aadu Puli Aatam">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aadu Puli Aatam - The Royal Indian Hunt Strategy">
+  <meta property="og:description" content="Play the ancient 23-node Indian hunt strategy board game with 3 Tigers vs 15 Goats, smart Alpha-Beta AI, and an interactive tutorial.">
+  <meta property="og:image" content="favicon.svg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Aadu Puli Aatam - The Royal Indian Hunt Strategy">
+  <meta name="twitter:description" content="Play the ancient 23-node Indian hunt strategy board game with 3 Tigers vs 15 Goats, smart Alpha-Beta AI, and an interactive tutorial.">
+  <meta name="twitter:image" content="favicon.svg">
+
+  <title>Aadu Puli Aatam - The Royal Indian Hunt Strategy</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app-container">
+    <div class="bg-ambient-pattern"></div>
+
+    <!-- 1. MAIN MENU SCREEN -->
+    <section id="screen-main-menu" class="screen active" aria-label="Main Menu">
+      <div class="card-panel menu-card">
+        <div class="menu-logo-badge" aria-hidden="true">◆</div>
+        <h1 class="game-title">Aadu Puli Aatam</h1>
+        <div class="game-subtitle">The Royal Hunt Strategy</div>
+
+        <div class="menu-btn-group">
+          <button id="btn-menu-play" class="btn btn-gold" aria-label="Play Game">
+            <span aria-hidden="true">⚔</span> Play Game
+          </button>
+          <button id="btn-menu-tutorial" class="btn btn-primary" aria-label="How to Play">
+            <span aria-hidden="true">📖</span> How to Play
+          </button>
+          <button id="btn-menu-settings" class="btn btn-secondary" aria-label="Game Settings">
+            <span aria-hidden="true">⚙</span> Settings
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. GAME SETUP SCREEN -->
+    <section id="screen-setup" class="screen" aria-label="Game Setup">
+      <div class="card-panel setup-card">
+        <h2 class="setup-title">Game Setup</h2>
+
+        <div class="setup-section-label">Select Game Mode</div>
+        <div class="mode-grid">
+          <button id="mode-goats-vs-ai" class="mode-option-btn active" data-mode="1">
+            <span class="icon">○</span>
+            <span>Goats vs AI Tigers</span>
+          </button>
+          <button id="mode-tigers-vs-ai" class="mode-option-btn" data-mode="2">
+            <span class="icon">◆</span>
+            <span>Tigers vs AI Goats</span>
+          </button>
+          <button id="mode-local-pvp" class="mode-option-btn" data-mode="0">
+            <span class="icon">👥</span>
+            <span>Local 2 Player</span>
+          </button>
+          <button id="mode-ai-vs-ai" class="mode-option-btn" data-mode="3">
+            <span class="icon">🤖</span>
+            <span>AI vs AI Spectator</span>
+          </button>
+        </div>
+
+        <div id="difficulty-section">
+          <div class="setup-section-label">AI Difficulty</div>
+          <div class="difficulty-group">
+            <button class="diff-btn" data-diff="0">Easy</button>
+            <button class="diff-btn active" data-diff="1">Medium</button>
+            <button class="diff-btn" data-diff="2">Hard</button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-top: 10px;">
+          <button id="btn-setup-back" class="btn btn-secondary" style="flex: 1;">
+            Back
+          </button>
+          <button id="btn-setup-start" class="btn btn-gold" style="flex: 2;">
+            Start Match
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. MATCH HUD & GAME BOARD SCREEN -->
+    <section id="screen-match" class="screen" aria-label="Active Game Match">
+      <div class="match-header">
+        <div class="header-left">
+          <button id="btn-match-back" class="btn btn-secondary btn-icon" title="Return to Menu" aria-label="Return to Menu">
+            ←
+          </button>
+          <button id="btn-match-rematch" class="btn btn-secondary btn-icon" title="Rematch" aria-label="Rematch">
+            ↺
+          </button>
+        </div>
+
+        <div id="turn-badge" class="turn-pill">
+          <div class="turn-indicator-dot"></div>
+          <span id="turn-text">Goats' Turn (Placing)</span>
+        </div>
+
+        <div class="header-right">
+          <button id="btn-match-settings" class="btn btn-secondary btn-icon" title="Audio Settings" aria-label="Settings">
+            ⚙
+          </button>
+        </div>
+      </div>
+
+      <div class="match-main-layout">
+        <!-- Canvas Board -->
+        <div class="board-container">
+          <canvas id="game-canvas"></canvas>
+        </div>
+
+        <!-- Sidebar Stats -->
+        <div class="stats-sidebar">
+          <div class="stat-box">
+            <div class="stat-label">Phase</div>
+            <div class="stat-value">
+              <span id="stat-phase">Placement</span>
+              <span id="badge-side" class="badge-tag badge-goats">Goats</span>
+            </div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-label">Goats in Hand</div>
+            <div class="stat-value">
+              <span id="stat-unplaced">15 / 15</span>
+              <span style="font-size: 1.1rem; color: var(--ivory);">○</span>
+            </div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-label">Captured Goats</div>
+            <div class="stat-value">
+              <span id="stat-captured">0 / 5</span>
+              <span style="font-size: 1.1rem; color: var(--crimson);">✕</span>
+            </div>
+            <div class="progress-bar-container">
+              <div id="capture-progress" class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-label">Tigers Trapped</div>
+            <div class="stat-value">
+              <span id="stat-trapped">0 / 3</span>
+              <span style="font-size: 1.1rem; color: var(--haldi-gold);">◆</span>
+            </div>
+          </div>
+
+          <div id="ai-stats-box" class="stat-box" style="display: none;">
+            <div class="stat-label">AI Engine Metrics</div>
+            <div id="stat-ai-metrics" style="font-size: 0.85rem; color: var(--haldi-light); font-weight: 500;">
+              Thinking...
+            </div>
+          </div>
+
+          <div id="log-ticker" class="log-ticker">
+            Match started. Goats place first piece.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. TUTORIAL / HOW TO PLAY SCREEN -->
+    <section id="screen-tutorial" class="screen" aria-label="How to Play Tutorial">
+      <div class="card-panel tutorial-layout">
+        <div class="board-container" style="flex: 1;">
+          <canvas id="tutorial-canvas"></canvas>
+        </div>
+
+        <div class="tutorial-text-pane">
+          <div id="tut-step-badge" class="tutorial-step-badge">Step 1 of 7</div>
+          <h2 id="tut-title" class="tutorial-title">1. Game Objective</h2>
+          <div id="tut-desc" class="tutorial-desc">Tutorial text goes here...</div>
+          <div id="tut-key-bullet" class="tutorial-key-box">Key rule takeaway...</div>
+
+          <div class="tutorial-nav-buttons">
+            <button id="btn-tut-back-menu" class="btn btn-secondary">
+              Back to Menu
+            </button>
+            <button id="btn-tut-prev" class="btn btn-secondary">
+              Previous
+            </button>
+            <button id="btn-tut-next" class="btn btn-gold">
+              Next Step
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. SETTINGS MODAL -->
+    <div id="modal-settings" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-heading">
+      <div class="card-panel settings-card">
+        <h2 id="settings-heading" class="setup-title" style="margin-bottom: 18px;">Settings</h2>
+
+        <div class="setting-row">
+          <div class="setting-label-group">
+            <span class="stat-label">Master Volume</span>
+            <button id="btn-mute-master" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;">Mute</button>
+          </div>
+          <div class="slider-container">
+            <input type="range" id="slider-master" min="0" max="1" step="0.05" value="0.8" aria-label="Master Volume">
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label-group">
+            <span class="stat-label">Background Music (Drone)</span>
+            <button id="btn-mute-bgm" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;">Mute</button>
+          </div>
+          <div class="slider-container">
+            <input type="range" id="slider-bgm" min="0" max="1" step="0.05" value="0.6" aria-label="Music Volume">
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-label-group">
+            <span class="stat-label">Sound Effects (SFX)</span>
+            <button id="btn-mute-sfx" class="btn btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;">Mute</button>
+          </div>
+          <div class="slider-container">
+            <input type="range" id="slider-sfx" min="0" max="1" step="0.05" value="0.9" aria-label="SFX Volume">
+          </div>
+        </div>
+
+        <div class="setting-row" style="margin-top: 10px;">
+          <div class="setting-label-group">
+            <span class="stat-label">Show Node Numbers</span>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" id="toggle-node-labels" style="accent-color: var(--haldi-gold); width: 18px; height: 18px; cursor: pointer;">
+            </label>
+          </div>
+        </div>
+
+        <button id="btn-close-settings" class="btn btn-primary" style="width: 100%; margin-top: 14px;">
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- 6. GAME OVER MODAL -->
+    <div id="modal-gameover" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="gameover-title">
+      <div class="card-panel gameover-card">
+        <div id="gameover-icon" class="gameover-icon">🏆</div>
+        <h2 id="gameover-title" class="gameover-title">Tigers Win!</h2>
+        <p id="gameover-desc" class="gameover-desc">Tigers have captured 5 Goats, securing the hunt victory!</p>
+
+        <div style="display: flex; gap: 12px; width: 100%; margin-top: 12px;">
+          <button id="btn-gameover-menu" class="btn btn-secondary" style="flex: 1;">
+            Main Menu
+          </button>
+          <button id="btn-gameover-rematch" class="btn btn-gold" style="flex: 1;">
+            Rematch
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

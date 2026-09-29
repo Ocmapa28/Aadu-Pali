@@ -1,0 +1,22 @@
+5. How to Run Locally
+
+### Option 1: Using Built-in Python HTTP Server
+```
+cd "d:\Koto\Drive\Unity\Aadu Puli Aatam (hunt engine)\Aadu pali antigravity AI\web"
+python -m http.server 8080
+```
+
+Option 2: Using Node.js
+```
+cd "d:\Koto\Drive\Unity\Aadu Puli Aatam (hunt engine)\Aadu pali antigravity AI\web"
+npx serve .
+```
+
+---
+
+6. How to Deploy
+
+The project has zero backend dependencies and deploys as static assets:
+- GitHub Pages: Push repository $\to$ In Settings $\to$ Pages, set root to `/web`.
+- Netlify: Drag-and-drop the `web/` folder into Netlify Drop, or connect repository with publish directory set to `web`.
+- Vercel: Run `npx vercel` inside `web/` or link repository.

@@ -1,0 +1,20 @@
+{
+  "name": "aadu-puli-aatam-web",
+  "version": "1.0.0",
+  "description": "Standalone HTML5 / Web Audio / Canvas edition of Aadu Puli Aatam",
+  "type": "module",
+  "scripts": {
+    "test": "node test/run-tests.js",
+    "start": "npx serve ."
+  },
+  "keywords": [
+    "aadu-puli-aatam",
+    "board-game",
+    "ai",
+    "negamax",
+    "canvas",
+    "web-audio"
+  ],
+  "author": "",
+  "license": "MIT"
+}
